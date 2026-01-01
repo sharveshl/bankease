@@ -7,7 +7,11 @@ import java.sql.SQLException;
 public class DBConnection {
 
     private static final String URL =
-            "jdbc:mysql://localhost:3306/bankease?useSSL=false&serverTimezone=UTC";
+            "jdbc:mysql://localhost:3306/bankease\r\n" + //
+                                "?useSSL=false\r\n" + //
+                                "&serverTimezone=UTC\r\n" + //
+                                "&allowPublicKeyRetrieval=true\r\n" + //
+                                "";
     private static final String USER = "root";
     private static final String PASSWORD = "sharvesh";
 
