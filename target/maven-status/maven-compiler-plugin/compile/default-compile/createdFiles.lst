@@ -1,4 +1,4 @@
-com\bankease\dao\UserDAO.class
-com\bankease\model\User.class
-com\bankease\App.class
-com\bankease\util\DBConnection.class
+com/bankease/App.class
+com/bankease/model/User.class
+com/bankease/dao/UserDAO.class
+com/bankease/util/DBConnection.class
