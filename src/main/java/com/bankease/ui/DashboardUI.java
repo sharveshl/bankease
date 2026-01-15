@@ -6,10 +6,10 @@ import com.bankease.model.User;
 
 public class DashboardUI extends JFrame {
 
-    private User user;
+    // private User user;
 
     public DashboardUI(User user) {
-        this.user = user;
+        // this.user = user;
 
         setTitle("BankEase Dashboard");
         setSize(400, 400);
