@@ -1,4 +1,12 @@
+/home/sharvesh/Desktop/bankease/src/main/java/com/bankease/dao/AccountDAO.java
 /home/sharvesh/Desktop/bankease/src/main/java/com/bankease/App.java
 /home/sharvesh/Desktop/bankease/src/main/java/com/bankease/model/User.java
+/home/sharvesh/Desktop/bankease/src/main/java/com/bankease/model/Beneficiary.java
+/home/sharvesh/Desktop/bankease/src/main/java/com/bankease/dao/BeneficiaryDAO.java
+/home/sharvesh/Desktop/bankease/src/main/java/com/bankease/service/AccountService.java
+/home/sharvesh/Desktop/bankease/src/main/java/com/bankease/model/Transaction.java
+/home/sharvesh/Desktop/bankease/src/main/java/com/bankease/model/Account.java
 /home/sharvesh/Desktop/bankease/src/main/java/com/bankease/util/DBConnection.java
+/home/sharvesh/Desktop/bankease/src/main/java/com/bankease/service/UserService.java
 /home/sharvesh/Desktop/bankease/src/main/java/com/bankease/dao/UserDAO.java
+/home/sharvesh/Desktop/bankease/src/main/java/com/bankease/dao/TransactionDAO.java

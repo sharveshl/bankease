@@ -1,4 +1,12 @@
-com/bankease/App.class
+com/bankease/model/Beneficiary.class
+com/bankease/dao/TransactionDAO.class
 com/bankease/model/User.class
+com/bankease/service/AccountService.class
+com/bankease/model/Account.class
+com/bankease/dao/BeneficiaryDAO.class
+com/bankease/dao/AccountDAO.class
+com/bankease/model/Transaction.class
+com/bankease/App.class
 com/bankease/dao/UserDAO.class
 com/bankease/util/DBConnection.class
+com/bankease/service/UserService.class
