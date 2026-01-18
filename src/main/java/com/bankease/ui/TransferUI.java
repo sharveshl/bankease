@@ -22,42 +22,46 @@ public class TransferUI extends JFrame {
         setLayout(new GridLayout(4, 2, 10, 10));
 
         JLabel fromLbl = new JLabel("From Account:");
-        JComboBox<String> fromList = new JComboBox<>();
-
-        JLabel toLbl = new JLabel("To Account:");
-        JComboBox<String> toList = new JComboBox<>();
+        JComboBox<String> fromBox = new JComboBox<>();
 
         List<Account> accounts = accountDAO.getAccountsByUser(user.getUser_id());
-
         for (Account a : accounts) {
-            fromList.addItem(a.getAccount_id() + "");
-            toList.addItem(a.getAccount_id() + "");
+            fromBox.addItem(a.getAccount_id() + " (" + a.getAccount_number() + ")");
         }
 
-        JLabel amountLbl = new JLabel("Amount:");
-        JTextField amountField = new JTextField();
+        JLabel toLbl = new JLabel("To Account Number:");
+        JTextField toAccField = new JTextField();
+
+        JLabel amtLbl = new JLabel("Amount:");
+        JTextField amtField = new JTextField();
 
         JButton transferBtn = new JButton("Transfer");
 
-        add(fromLbl); add(fromList);
-        add(toLbl); add(toList);
-        add(amountLbl); add(amountField);
-        add(new JLabel());
-        add(transferBtn);
+        add(fromLbl); add(fromBox);
+        add(toLbl); add(toAccField);
+        add(amtLbl); add(amtField);
+        add(new JLabel()); add(transferBtn);
 
         transferBtn.addActionListener(e -> {
-            int fromAcc = Integer.parseInt((String) fromList.getSelectedItem());
-            int toAcc = Integer.parseInt((String) toList.getSelectedItem());
-            double amount = Double.parseDouble(amountField.getText());
+            try {
+                String fromText = (String) fromBox.getSelectedItem();
+                int fromAccId = Integer.parseInt(fromText.split(" ")[0]);
 
-            if (fromAcc == toAcc) {
-                JOptionPane.showMessageDialog(null, "Cannot transfer to the same account!");
-                return;
+                String toAccNo = toAccField.getText();
+                double amount = Double.parseDouble(amtField.getText());
+
+                boolean success = accountService.transfer(fromAccId, toAccNo, amount);
+
+                if (success) {
+                    JOptionPane.showMessageDialog(null, "Transfer Successful!");
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Transfer Failed!");
+                }
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Invalid input!");
             }
-
-            accountService.transfer(fromAcc, toAcc, amount);
-            JOptionPane.showMessageDialog(null, "Transfer Successful!");
-            dispose();
         });
 
         setVisible(true);

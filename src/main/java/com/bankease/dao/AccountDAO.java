@@ -100,4 +100,26 @@ public class AccountDAO {
             return false;
         }
     }
+    public Account getAccountByNumber(String accountNumber) {
+    String sql = "SELECT * FROM accounts WHERE account_number = ?";
+    Account account = null;
+
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, accountNumber);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            account = new Account();
+            account.setAccount_id(rs.getInt("account_id"));
+            account.setUser_id(rs.getInt("user_id"));
+            account.setAccount_number(rs.getString("account_number"));
+            account.setAccount_type(rs.getString("account_type"));
+            account.setBalance(rs.getDouble("balance"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return account;
+}
+
 }

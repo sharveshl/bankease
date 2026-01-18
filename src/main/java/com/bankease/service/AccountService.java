@@ -93,60 +93,49 @@ public class AccountService {
     // ------------------------------
     // TRANSFER
     // ------------------------------
-    public boolean transfer(int fromAccountId, int toAccountId, double amount) {
+    public boolean transfer(int fromAccountId, String toAccountNumber, double amount) {
+
         if (amount <= 0) {
-            System.out.println("Invalid transfer amount.");
+            System.out.println("Invalid amount");
             return false;
         }
 
         Account fromAcc = accountDAO.getAccountById(fromAccountId);
-        Account toAcc = accountDAO.getAccountById(toAccountId);
+        Account toAcc = accountDAO.getAccountByNumber(toAccountNumber);
 
         if (fromAcc == null || toAcc == null) {
-            System.out.println("Account not found.");
+            System.out.println("Account not found");
             return false;
         }
 
         if (fromAcc.getBalance() < amount) {
-            System.out.println("Insufficient funds.");
+            System.out.println("Insufficient balance");
             return false;
         }
 
-        // Deduct from source
-        double newFromBalance = fromAcc.getBalance() - amount;
-        boolean fromUpdated = accountDAO.updateBalance(fromAccountId, newFromBalance);
+        double fromNewBal = fromAcc.getBalance() - amount;
+        double toNewBal = toAcc.getBalance() + amount;
 
-        // Add to destination
-        double newToBalance = toAcc.getBalance() + amount;
-        boolean toUpdated = accountDAO.updateBalance(toAccountId, newToBalance);
+        accountDAO.updateBalance(fromAcc.getAccount_id(), fromNewBal);
+        accountDAO.updateBalance(toAcc.getAccount_id(), toNewBal);
 
-        if (fromUpdated && toUpdated) {
+        transactionDAO.addTransaction(new Transaction(
+                fromAcc.getAccount_id(),
+                "TRANSFER_OUT",
+                amount,
+                fromNewBal,
+                "Transfer to A/c " + toAcc.getAccount_number()
+        ));
 
-            // Outgoing transfer transaction
-            Transaction outTx = new Transaction(
-                    fromAccountId,
-                    "TRANSFER_OUT",
-                    amount,
-                    newFromBalance,
-                    "Transfer sent to Account: " + toAccountId
-            );
-            transactionDAO.addTransaction(outTx);
+        transactionDAO.addTransaction(new Transaction(
+                toAcc.getAccount_id(),
+                "TRANSFER_IN",
+                amount,
+                toNewBal,
+                "Transfer from A/c " + fromAcc.getAccount_number()
+        ));
 
-            // Incoming transfer transaction
-            Transaction inTx = new Transaction(
-                    toAccountId,
-                    "TRANSFER_IN",
-                    amount,
-                    newToBalance,
-                    "Transfer received from Account: " + fromAccountId
-            );
-            transactionDAO.addTransaction(inTx);
-
-            return true;
-
-        } else {
-            System.out.println("Transfer failed.");
-            return false;
-        }
+        return true;
     }
+
 }
