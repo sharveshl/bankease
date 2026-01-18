@@ -26,7 +26,7 @@ public class TransferUI extends JFrame {
 
         List<Account> accounts = accountDAO.getAccountsByUser(user.getUser_id());
         for (Account a : accounts) {
-            fromBox.addItem(a.getAccount_id() + " (" + a.getAccount_number() + ")");
+            fromBox.addItem(a.getAccount_number() + "  " + a.getAccount_type());
         }
 
         JLabel toLbl = new JLabel("To Account Number:");
