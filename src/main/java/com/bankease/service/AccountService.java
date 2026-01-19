@@ -90,6 +90,10 @@ public class AccountService {
         return updated;
     }
 
+    public double fetchBalance(Account acc){
+        return acc.getBalance();
+    }
+
     // ------------------------------
     // TRANSFER
     // ------------------------------

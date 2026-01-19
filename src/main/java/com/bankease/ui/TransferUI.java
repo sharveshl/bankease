@@ -16,10 +16,10 @@ public class TransferUI extends JFrame {
 
     public TransferUI(User user) {
 
-        setTitle("Transfer Money");
+        setTitle("Money Transfer");
         setSize(350, 300);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(4, 2, 10, 10));
+        setLayout(new GridLayout(6, 2, 10, 10));
 
         JLabel fromLbl = new JLabel("From Account:");
         JComboBox<String> fromBox = new JComboBox<>();
@@ -34,12 +34,14 @@ public class TransferUI extends JFrame {
 
         JLabel amtLbl = new JLabel("Amount:");
         JTextField amtField = new JTextField();
-
+        JButton fetchBalance = new JButton("FetchBalance");
         JButton transferBtn = new JButton("Transfer");
-
+        JLabel balancField = new JLabel("Balance: ₹0.00");
         add(fromLbl); add(fromBox);
         add(toLbl); add(toAccField);
         add(amtLbl); add(amtField);
+        add(fetchBalance);
+        add(balancField);
         add(new JLabel()); add(transferBtn);
 
         transferBtn.addActionListener(e -> {
@@ -62,6 +64,25 @@ public class TransferUI extends JFrame {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "Invalid input!");
             }
+        });
+
+        fetchBalance.addActionListener(e ->{
+            // List<Account> acc = accountDAO.getAccountsByUser(user.getUser_id());
+            String fromText = (String) fromBox.getSelectedItem();
+            String slectedAccNo = fromText.split(" ")[0];
+            Account selectedAccount = null;
+            for(Account i:accounts){
+                if(i.getAccount_number().equals(slectedAccNo)){
+                    selectedAccount = i;
+                    break;
+                }
+            }
+            if(selectedAccount!=null)
+                balancField.setText("Balance: ₹" + accountService.fetchBalance(selectedAccount));
+            else{
+                JOptionPane.showMessageDialog(null, "No Account is present");
+            }
+
         });
 
         setVisible(true);
