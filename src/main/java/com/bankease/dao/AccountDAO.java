@@ -101,25 +101,54 @@ public class AccountDAO {
         }
     }
     public Account getAccountByNumber(String accountNumber) {
-    String sql = "SELECT * FROM accounts WHERE account_number = ?";
-    Account account = null;
+        String sql = "SELECT * FROM accounts WHERE account_number = ?";
+        Account account = null;
 
-    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, accountNumber);
-        ResultSet rs = ps.executeQuery();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, accountNumber);
+            ResultSet rs = ps.executeQuery();
 
-        if (rs.next()) {
-            account = new Account();
-            account.setAccount_id(rs.getInt("account_id"));
-            account.setUser_id(rs.getInt("user_id"));
-            account.setAccount_number(rs.getString("account_number"));
-            account.setAccount_type(rs.getString("account_type"));
-            account.setBalance(rs.getDouble("balance"));
+            if (rs.next()) {
+                account = new Account();
+                account.setAccount_id(rs.getInt("account_id"));
+                account.setUser_id(rs.getInt("user_id"));
+                account.setAccount_number(rs.getString("account_number"));
+                account.setAccount_type(rs.getString("account_type"));
+                account.setBalance(rs.getDouble("balance"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return account;
     }
-    return account;
-}
 
+    public double getBalanceByAccount(Account acc){
+        double balance = 0;
+        String sql = "SELECT balance from accounts WHERE account_number = ?";
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, acc.getAccount_number());
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+                balance = rs.getDouble("balance");
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return balance;
+    }
+
+    public double getBalanceByAccountNumber(String accNo){
+        double balance = 0;
+        String sql = "SELECT balance from accounts WHERE account_number = ?";
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, accNo);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+                balance = rs.getDouble("balance");
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        return balance;
+    }
 }

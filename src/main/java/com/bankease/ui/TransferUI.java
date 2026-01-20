@@ -47,18 +47,37 @@ public class TransferUI extends JFrame {
         transferBtn.addActionListener(e -> {
             try {
                 String fromText = (String) fromBox.getSelectedItem();
-                int fromAccId = Integer.parseInt(fromText.split(" ")[0]);
+                String fromAccNo = fromText.split("\\s+")[0];
 
                 String toAccNo = toAccField.getText();
                 double amount = Double.parseDouble(amtField.getText());
 
-                boolean success = accountService.transfer(fromAccId, toAccNo, amount);
+                int choice = JOptionPane.showConfirmDialog(null, 
+                    "Do you want to transfer the amount?",
+                    "Confirmation",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+                );
+                boolean success = false;
+                if(choice==JOptionPane.YES_OPTION){
+                    success = accountService.transfer(fromAccNo, toAccNo, amount);
+                    System.out.println("User confirmation is YES");
+                }
+                else if(choice==JOptionPane.NO_OPTION){
+                    success = false;
+                    System.out.println("User cancelled  the transaction");
+                } 
+                else{
+                    System.out.println("User chose Cancel or closed the confirmation dialog for transaction.");
+                }
 
                 if (success) {
                     JOptionPane.showMessageDialog(null, "Transfer Successful!");
                     dispose();
+                    System.out.println("Transfer Successfull");
                 } else {
                     JOptionPane.showMessageDialog(null, "Transfer Failed!");
+                    System.out.println("Transfer Failed");
                 }
 
             } catch (Exception ex) {
@@ -70,13 +89,7 @@ public class TransferUI extends JFrame {
             // List<Account> acc = accountDAO.getAccountsByUser(user.getUser_id());
             String fromText = (String) fromBox.getSelectedItem();
             String slectedAccNo = fromText.split(" ")[0];
-            Account selectedAccount = null;
-            for(Account i:accounts){
-                if(i.getAccount_number().equals(slectedAccNo)){
-                    selectedAccount = i;
-                    break;
-                }
-            }
+            Account selectedAccount = accountDAO.getAccountByNumber(slectedAccNo);
             if(selectedAccount!=null)
                 balancField.setText("Balance: ₹" + accountService.fetchBalance(selectedAccount));
             else{

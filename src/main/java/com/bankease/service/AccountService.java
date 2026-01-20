@@ -91,20 +91,24 @@ public class AccountService {
     }
 
     public double fetchBalance(Account acc){
-        return acc.getBalance();
+        return accountDAO.getBalanceByAccount(acc);
     }
 
+    
+    public double fetchBalance(String accNoString){
+        return accountDAO.getBalanceByAccountNumber(accNoString);
+    }
     // ------------------------------
     // TRANSFER
     // ------------------------------
-    public boolean transfer(int fromAccountId, String toAccountNumber, double amount) {
+    public boolean transfer(String fromAccountNumber, String toAccountNumber, double amount) {
 
         if (amount <= 0) {
             System.out.println("Invalid amount");
             return false;
         }
 
-        Account fromAcc = accountDAO.getAccountById(fromAccountId);
+        Account fromAcc = accountDAO.getAccountByNumber(fromAccountNumber);
         Account toAcc = accountDAO.getAccountByNumber(toAccountNumber);
 
         if (fromAcc == null || toAcc == null) {
