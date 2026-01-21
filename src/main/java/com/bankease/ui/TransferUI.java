@@ -97,7 +97,7 @@ public class TransferUI extends JFrame {
             }
 
         });
-
+        
         setVisible(true);
     }
 }
